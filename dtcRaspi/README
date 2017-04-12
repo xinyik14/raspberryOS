@@ -1,5 +1,6 @@
 (1) I have rewritten the Makefile. To compile the program, simply type
         make
+    A file named kernel7.img will be generated, which is the kernel. Move this file to SD card and the Raspberry Pi 2/3 will boot.
 
 (2) main() file is dtcMain.c. I have encapsulated the GPIO. 
     To make, say GPIO 27, low, call function setGPIO in this form:
