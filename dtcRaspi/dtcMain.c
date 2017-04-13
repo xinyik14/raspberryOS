@@ -1,18 +1,31 @@
-#include "rpi-gpio.h"
+/*
+    Reference: www.valvers.com
+*/
 
-volatile unsigned int tim;
+#include <string.h>
+#include <stdlib.h>
+
+#include "rpi-gpio.h"
+#include "rpi-systimer.h"
+
 
 /** Main function - we'll never return from here */
 void kernel_main( unsigned int r0, unsigned int r1, unsigned int atags )
 {
-    while (1){
-	for (tim = 0; tim < 500000; tim++)
-	    ;
-	setGPIO(27, HIGH);
-	
-	for (tim = 0; tim < 1500000; tim++)
-	    ;
-	setGPIO(27, LOW);
+    // test C-library
+    unsigned int* counters;
+    counters = malloc( 1024 * sizeof(unsigned int));
+    if (counters == NULL){
+	while(1) {
+	    setGPIO(27, HIGH);
+	}	
     }
 
+    // test system timer
+    while (1){
+	waitMicroSeconds( 500000); // 0.5s
+	setGPIO(27, HIGH);
+	waitMicroSeconds(1000000); // 1s
+	setGPIO(27, LOW);
+    }
 }
