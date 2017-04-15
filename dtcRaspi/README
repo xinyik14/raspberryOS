@@ -1,13 +1,49 @@
-(1) I have rewritten the Makefile. To compile the program, simply type
-        make
-    A file named kernel7.img will be generated, which is the kernel. Move this file to SD card and the Raspberry Pi 2/3 will boot.
+    
+    Project of ECS 251 Operating System, UC Davis
+    Group member: Yiran Wan, Xinyi Zhang, Zheng Fan, Huanle Zhang
 
-(2) main() file is dtcMain.c. I have encapsulated the GPIO. 
-    To make, say GPIO 27, low, call function setGPIO in this form:
-        setGPIO(27, LOW);
-    Correspondingly,
-        setGPIO(27, HIGH);
-        
-        
-TODO:
-    I will figure out interrupt maybe....
+Update (4-14-2017):
+    1. interrupt support
+    2. rpi-armtimer.h rpi-armtimer.c:
+	    Arm timer (for interrupt)
+    3. rpi-interrupt.h rpi-interrupt.c:
+	    Interrupt interface
+    4. Makefile
+	    remove target
+
+Update (4-13-2017):
+    1. C-library support
+    2. rpi-systimer.h rpi-systimer.c:
+	encapsulate system timer with function call:
+	    void waitMicroSeconds(unsigned long long us)
+		Parameters:
+		    us: 64bit. Max. waiting time: ~584942 years
+		return:
+		    void
+    3. Makefile:
+	neat output info
+    4. rpi-gpio.c
+	returns of setGPIO()
+	    -1, -2, 0
+    TODO: 
+	interrupt
+
+update (4-12-2017):
+    1. Makefile: 
+	automatically generate kernel7.img only;
+    2. rpi-gpio.h rpi-gpio.c:
+	encapsulate GPIO with function call:
+	    int setGPIO(int pin, int status)
+		Parameters:
+		    pin: 0-53
+		    status: HIGH, LOW
+		Return:
+		    -1: error
+		     0: OK
+	    ex. setGPIO(27, HIGH);
+    TODO:
+	interrupt
+
+Reference: 
+    Brian Sidebotham's Bare Metal Pi Tutorial. www.valvers.com
+    David Welch's Pi Repo. www.github.com/dwelch67/raspberrypi

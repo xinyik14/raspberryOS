@@ -1,3 +1,14 @@
+/*
+    Reference: 
+	Brian Sidebotham's Bare Metal Pi Tutorial. www.valvers.com
+	Davis Welch's Pi Repo. www.github.com/dwelch67/raspberrypi
+    
+    
+    Huanle Zhang at UC Davis. www.huanlezhang.com 
+    April 14, 2017
+
+*/
+
 #include "rpi-gpio.h"
 
 const int gpio_pin[][2] = { // #register, #bit
@@ -64,7 +75,7 @@ int setGPIO(int pin, int status){
     unsigned int bitValue;
 
     if (pin < 0 || pin > 53) return -1;
-    if (status != HIGH && status != LOW) return -1;
+    if (status != HIGH && status != LOW) return -2;
 
     bitValue = gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] & (1 <<
     (gpio_pin[pin][1]+2));
