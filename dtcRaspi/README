@@ -45,6 +45,5 @@ update (4-12-2017):
 	interrupt
 
 Reference: 
-    www.valvers.com
-	-> OPEN SOFTWARE
-	    -> Raspberry Pi
+    Brian Sidebotham's Bare Metal Pi Tutorial. www.valvers.com
+    David Welch's Pi Repo. www.github.com/dwelch67/raspberrypi
