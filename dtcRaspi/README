@@ -10,6 +10,8 @@ Update (4-14-2017):
 	    Interrupt interface
     4. Makefile
 	    remove target
+    TODO:
+	multi-core
 
 Update (4-13-2017):
     1. C-library support
