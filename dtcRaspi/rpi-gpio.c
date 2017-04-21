@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    April 14, 2017
+    Last Update: April 21, 2017
 
 */
 
@@ -72,11 +72,17 @@ volatile unsigned int* gpio = (unsigned int*)GPIO_BASE;
 
 int setGPIO(int pin, int status){
     
+    volatile static int synFlag = 0;
     unsigned int bitValue;
+
+    while (synFlag == 1)
+	;
+    synFlag = 1;
 
     if (pin < 0 || pin > 53) return -1;
     if (status != HIGH && status != LOW) return -2;
 
+    
     bitValue = gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] & (1 <<
     (gpio_pin[pin][1]+2));
     if (bitValue != 0){
@@ -89,6 +95,7 @@ int setGPIO(int pin, int status){
 	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~(1 <<
 	(gpio_pin[pin][1]+1));	
     }
+   
     bitValue = gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] & (1 <<
     (gpio_pin[pin][1]));
     if (bitValue == 0){
@@ -109,5 +116,6 @@ int setGPIO(int pin, int status){
 	    gpio[GPIO_GPCLR1] |= (1 << (pin -32));
 	}
     }
+    synFlag = 0;
     return 0;
 }

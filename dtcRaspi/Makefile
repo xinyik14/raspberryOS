@@ -4,11 +4,11 @@
 #   Davis Welch's Pi Repo. www.github.com/dwelch67/rapberrypi
 
 # Huanle Zhang at UC Davis. www.huanlezhang.com
-# April 14. 2017
+# Last Update: April 21, 2017
 
 dtcMainFile := dtcMain
 
-dtcIncFiles := $(dtcMainFile) rpi-gpio rpi-systimer rpi-interrupt rpi-armtimer
+dtcIncFiles := $(dtcMainFile) rpi-gpio rpi-systimer rpi-interrupt rpi-armtimer rpi-core
 
 dtcDefault: kernel7.img
 
