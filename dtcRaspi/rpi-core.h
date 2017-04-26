@@ -3,7 +3,7 @@
 	Trying Bare Metal on Raspberry Pi 2. www.raspberrypi.org/forums/viewtopic.php?p=701773
 
     Huanle Zhang at UC Davis. www.huanlezhang.com
-    Last Update: April 21, 2017
+    Last Update: April 26, 2017
 */
 
 #ifndef _RPI_CORE_H_
@@ -18,5 +18,6 @@ void core_1_main(void);
 void core_2_main(void);
 void ocre_3_main(void);
 
+extern volatile int pCoreRun[];
 
 #endif

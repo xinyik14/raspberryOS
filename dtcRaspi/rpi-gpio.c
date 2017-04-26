@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    Last Update: April 21, 2017
+    Last Update: April 26, 2017
 
 */
 
@@ -73,49 +73,29 @@ volatile unsigned int* gpio = (unsigned int*)GPIO_BASE;
 int setGPIO(int pin, int status){
     
     volatile static int synFlag = 0;
-    unsigned int bitValue;
-
-    while (synFlag == 1)
+    while(synFlag == 1){
 	;
+    }
     synFlag = 1;
 
     if (pin < 0 || pin > 53) return -1;
     if (status != HIGH && status != LOW) return -2;
 
-    
-    bitValue = gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] & (1 <<
-    (gpio_pin[pin][1]+2));
-    if (bitValue != 0){
-	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~(1 <<
-	(gpio_pin[pin][1]+2));	
-    }
-    bitValue = gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] & (1 <<
-    (gpio_pin[pin][1]+1));
-    if (bitValue != 0){
-	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~(1 <<
-	(gpio_pin[pin][1]+1));	
-    }
-   
-    bitValue = gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] & (1 <<
-    (gpio_pin[pin][1]));
-    if (bitValue == 0){
-	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] |= (1 <<
-	(gpio_pin[pin][1]));	
-    }
-    
+    gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] |= (1 << (gpio_pin[pin][1]));
     if (status == HIGH){
 	if (pin <= 31){
-	    gpio[GPIO_GPSET0] |= (1 << pin);
-	} else {
-	    gpio[GPIO_GPSET1] |= (1 << (pin - 32));    
+	    gpio[GPIO_GPSET0] = (1 << pin);   
+	} else { 
+	    gpio[GPIO_GPSET1] = (1 << (pin - 32));    
 	}
     } else {
 	if (pin <= 31){
-	    gpio[GPIO_GPCLR0] |= (1 << pin);    
+	    gpio[GPIO_GPCLR0] = (1 << pin);    
 	} else {
-	    gpio[GPIO_GPCLR1] |= (1 << (pin -32));
-	}
+	    gpio[GPIO_GPCLR1] = (1 << (pin - 32));    
+	}	
     }
+
     synFlag = 0;
     return 0;
 }

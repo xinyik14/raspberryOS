@@ -32,14 +32,15 @@
 //		www.raspberrypi.org/forums/viewtopic.php?p=701773
 
 // 	Huanle Zhang at UC Davis. www.huanlezhang.com 
-//	Last Update: April 21, 2017
+//	Last Update: April 26, 2017
 
 
 .section ".text.startup"
 
 .global _start
-.global _get_stack_pointer
+//.global _get_stack_pointer
 .global _enable_interrupts
+.global _disable_interrupts
 .global _core_1_main
 .global _core_2_main
 .global _core_3_main
@@ -117,7 +118,13 @@ _inf_loop:
 
 _enable_interrupts:
     mrs r0, cpsr
-    bic r0, r0, #0x80
+    bic r0, r0, #0xc0
+    msr cpsr_c, r0
+    bx lr
+
+_disable_interrupts:
+    mrs r0, cpsr
+    orr r0, r0, #0xc0
     msr cpsr_c, r0
     bx lr
 
@@ -130,7 +137,7 @@ _core_2_main:
     bl core_2_main
 
 _core_3_main:
-    mov sp, #(736 * 1024 * 1024)
+    mov sp, #(704 * 1024 * 1024)
     bl core_3_main
 
 
