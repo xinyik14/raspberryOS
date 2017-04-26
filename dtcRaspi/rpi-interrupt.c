@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    April 14, 2017
+    April 26, 2017
 
 */
 
@@ -41,17 +41,25 @@ void c_hyp_handler(void){
 
 void c_irq_handler(void){
     
+    _disable_interrupts();
+
+
     static int lit = 0;
 
     sysArmTimer->IRQ_ClearAck = 1;
 
-    if ( lit ){
-	lit = 0;
-	setGPIO(27, HIGH);	
-    } else {
-	lit = 1;
-	setGPIO(27, LOW);
-    }
+
+	if ( lit ){
+	    lit = 0;
+	    while(setGPIO(27, HIGH) != 0)
+		;	
+	} else {
+	   lit = 1;
+	    while(setGPIO(27, LOW) != 0)
+		;
+	}
+    
+    _enable_interrupts();
 
 }
 

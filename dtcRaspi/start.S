@@ -28,16 +28,22 @@
 //	Reference: 
 //		Brian Sidebotham's Bare Metal Pi Tutorial. www.valvers.com
 //		Davis Welch's Pi Repo. www.github.com/dwelch67/raspberrypi
+//		Trying Bare Metal on Raspberry Pi 2.
+//		www.raspberrypi.org/forums/viewtopic.php?p=701773
 
 // 	Huanle Zhang at UC Davis. www.huanlezhang.com 
-//	April 14, 2017
+//	Last Update: April 26, 2017
 
 
 .section ".text.startup"
 
 .global _start
-.global _get_stack_pointer
+//.global _get_stack_pointer
 .global _enable_interrupts
+.global _disable_interrupts
+.global _core_1_main
+.global _core_2_main
+.global _core_3_main
 
 _start:
     ldr pc, _reset_handler
@@ -62,7 +68,7 @@ _reset:
     mov r0,#0x8000
     MCR p15, 4, r0, c12, c0, 0
 
-    mov sp,#0x8000
+    mov sp, #(896 * 1024 * 1024)
     bl _cstartup
 
 _fiq_vector:
@@ -112,6 +118,26 @@ _inf_loop:
 
 _enable_interrupts:
     mrs r0, cpsr
-    bic r0, r0, #0x80
+    bic r0, r0, #0xc0
     msr cpsr_c, r0
     bx lr
+
+_disable_interrupts:
+    mrs r0, cpsr
+    orr r0, r0, #0xc0
+    msr cpsr_c, r0
+    bx lr
+
+_core_1_main:
+    mov sp, #(832 * 1024 * 1024)
+    bl core_1_main
+
+_core_2_main:
+    mov sp, #(768 * 1024 * 1024)
+    bl core_2_main
+
+_core_3_main:
+    mov sp, #(704 * 1024 * 1024)
+    bl core_3_main
+
+

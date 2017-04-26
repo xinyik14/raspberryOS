@@ -2,6 +2,30 @@
     Project of ECS 251 Operating System, UC Davis
     Group member: Yiran Wan, Xinyi Zhang, Zheng Fan, Huanle Zhang
 
+Update (4-26-2017):
+    1. dtcMain:
+	demonstrate marquee, multi-cores, interrupts
+    2. rpi-gpio.c
+	bug fix of error logics in setGPIO()
+    3. rpi-core.h rpi-core.c:
+	core running
+    TODO:
+	networking
+
+Update (4-21-2017):
+    1. 4-core running
+    2. rpi-core.h rpi-core.c:
+	Sub-main functions for extra cores
+    3. burnImg.sh:
+	Auto compile, auto mov to SD card
+    4. rpi-gpio.c:
+	setGPIO, thread-safe
+    5. start.S:
+	multiple-cores support
+    TODO:
+	test interrupt in multi-cores
+	
+
 Update (4-14-2017):
     1. interrupt support
     2. rpi-armtimer.h rpi-armtimer.c:
@@ -49,3 +73,4 @@ update (4-12-2017):
 Reference: 
     Brian Sidebotham's Bare Metal Pi Tutorial. www.valvers.com
     David Welch's Pi Repo. www.github.com/dwelch67/raspberrypi
+    Trying Bare Metal on Raspberry Pi 2. www.raspberrypi.org/forums/viewtopic.php?p=701773
