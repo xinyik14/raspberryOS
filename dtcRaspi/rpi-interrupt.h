@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    April 14, 2017
+    April 28, 2017
 
 */
 
@@ -25,6 +25,8 @@
 #define INTERRUPT_TABLE_ILLEGAL_ACCESS_TYPE_1	( 1 << 6 )
 #define INTERRUPT_TABLE_ILLEGAL_ACCESS_TYPE_0	( 1 << 7 )
 
+#define INTERRUPT_BASIC_PENDING_TIMER	( 1 << 0 )
+
 typedef struct {
     volatile unsigned int basic_pending;
     volatile unsigned int GPU_pending_1;
@@ -38,6 +40,6 @@ typedef struct {
     volatile unsigned int base_disable;
 } Interrupt_registers;
 
-extern volatile Interrupt_registers* sysInterrupt;
+void startTimerTask(unsigned int us, void (*f)(void));
 
 #endif

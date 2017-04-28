@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    April 26, 2017
+    April 28, 2017
 
 */
 
@@ -13,10 +13,19 @@
 #include "rpi-gpio.h"
 #include "rpi-armtimer.h"
 
+typedef void (*TimerTask)(void);
+static TimerTask myTimerTask;
 
 volatile Interrupt_registers* sysInterrupt = (Interrupt_registers *)
 INTERRUPT_CONTROLLER_BASE;
 
+void startTimerTask(unsigned int us, void (*f)(void))
+{
+    sysInterrupt->base_disable = INTERRUPT_TABLE_ARM_TIMER;
+    myTimerTask = f;
+    setTimer(us);
+    sysInterrupt->base_interrupt_enable = INTERRUPT_TABLE_ARM_TIMER;
+}
 
 void c_undefined_handler(void)
 {
@@ -42,23 +51,13 @@ void c_hyp_handler(void){
 void c_irq_handler(void){
     
     _disable_interrupts();
-
-
-    static int lit = 0;
-
-    sysArmTimer->IRQ_ClearAck = 1;
-
-
-	if ( lit ){
-	    lit = 0;
-	    while(setGPIO(27, HIGH) != 0)
-		;	
-	} else {
-	   lit = 1;
-	    while(setGPIO(27, LOW) != 0)
-		;
-	}
     
+    if ( ((sysInterrupt->basic_pending) & INTERRUPT_BASIC_PENDING_TIMER) == 1){
+	// timer task irq
+	clearTimerPendingBit();
+	myTimerTask();
+    }
+
     _enable_interrupts();
 
 }

@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    April 14, 2017
+    April 28, 2017
 
 */
 
@@ -40,6 +40,8 @@ typedef struct {
     volatile unsigned int Free_Running_Counter;
 } Arm_timer_t;
 
-extern volatile Arm_timer_t* sysArmTimer;
+void setTimer(unsigned int us);
+void cancelTimer(void);
+inline void clearTimerPendingBit(void);
 
 #endif
