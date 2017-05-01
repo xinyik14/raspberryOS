@@ -8,7 +8,7 @@
 
 dtcMainFile := dtcMain
 
-dtcIncFiles := $(dtcMainFile) rpi-gpio rpi-systimer rpi-interrupt rpi-armtimer rpi-core
+dtcIncFiles := $(dtcMainFile) rpi-gpio rpi-systimer rpi-interrupt rpi-armtimer rpi-core rpi-i2s dtcMath
 
 dtcDefault: kernel7.img
 

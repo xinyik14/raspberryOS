@@ -12,7 +12,8 @@
 #ifndef _RPI_ARM_TIMER_H_
 #define _RPI_ARM_TIMER_H_
 
-#define TIMER_BASE 0x3F00B000UL
+#include "dtcArgs.h"
+
 #define ARMTIMER_BASE ( TIMER_BASE + 0x400 )
 
 #define ARMTIMER_CONTROL_16BIT	( 0 << 1 )

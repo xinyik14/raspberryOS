@@ -5,14 +5,14 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    April 14, 2017
+    Last Update: April 14, 2017
 
 */
 
 #ifndef _RPI_GPIO_H_
 #define _RPI_GPIO_H_
 
-#define GPIO_BASE 0x3F200000UL
+#include "dtcArgs.h"
 
 #define GPIO_GPFSEL0 0
 #define GPIO_GPFSEL1 1

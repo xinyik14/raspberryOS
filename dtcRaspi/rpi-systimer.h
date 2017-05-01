@@ -12,7 +12,7 @@
 #ifndef _SYSTIMER_H
 #define _SYSTIMER_H
 
-#define SYSTIMER_BASE 0x3F003000UL
+#include "dtcArgs.h"
 
 typedef struct {
     volatile unsigned int control_status;

@@ -62,19 +62,19 @@ void core0_main(void)
     	waitMicroSeconds(500000);
 	pCoreRun[1] = 1;
 
-	waitMicroSeconds(500000);
+	waitMicroSeconds(1000000);
 	pCoreRun[1] = 0;
 
 	waitMicroSeconds(500000);
 	pCoreRun[2] = 1;
 
-	waitMicroSeconds(500000);
+	waitMicroSeconds(1000000);
 	pCoreRun[2] = 0;
 
 	waitMicroSeconds(500000);
 	pCoreRun[3] = 1;
 
-	waitMicroSeconds(500000);
+	waitMicroSeconds(1000000);
 	pCoreRun[3] = 0;
 	
 	

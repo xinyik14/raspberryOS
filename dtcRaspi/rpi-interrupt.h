@@ -12,7 +12,6 @@
 #ifndef _RPI_INTERRUPT_H_
 #define _RPI_INTERRUPT_H_
 
-#define INTERRUPT_BASE 0x3F00B000UL
 #define INTERRUPT_CONTROLLER_BASE ( INTERRUPT_BASE + 0x200 )
 
 // ARM periherals interrupt table

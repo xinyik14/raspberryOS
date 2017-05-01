@@ -10,6 +10,7 @@
 
 #include "rpi-core.h"
 #include "rpi-gpio.h"
+#include "rpi-i2s.h"
 
 volatile int pCoreRun[4] = {0, 0, 0, 0};
 
@@ -28,6 +29,7 @@ void start_core_2(void){
 void start_core_3(void){
     pCore = (unsigned int*) CORE3_START_ADDRESS;
     *pCore = (unsigned int) &_core_3_main;
+    
 }
 
 void core_1_main(void){
@@ -66,6 +68,8 @@ void core_2_main(void){
 
 void core_3_main(void){
     
+    // startAudio();
+
     volatile static int ledStatus = 0;
 
     while(1){
