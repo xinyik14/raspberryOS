@@ -2,6 +2,16 @@
     Project of ECS 251 Operating System, UC Davis
     Group member: Yiran Wan, Xinyi Zhang, Zheng Fan, Huanle Zhang
 
+Update (4-28-2017):
+    1. modularize programs:
+	dtcMain.c rpi-armtimer rpi-core rpi-interrupt
+    2. timer interrupt based routine interface:
+	startTimerTask(unsigned int us, void (*f)(void))
+	    e.g., startTimerTask(1000000, timerTaskFunc)
+		envoke timerTaskFunc function every 1s
+    TODO:
+	PWM Audio, networking
+
 Update (4-26-2017):
     1. dtcMain:
 	demonstrate marquee, multi-cores, interrupts

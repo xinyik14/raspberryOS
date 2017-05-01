@@ -5,14 +5,13 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    April 14, 2017
+    April 28, 2017
 
 */
 
 #ifndef _RPI_INTERRUPT_H_
 #define _RPI_INTERRUPT_H_
 
-#define INTERRUPT_BASE 0x3F00B000UL
 #define INTERRUPT_CONTROLLER_BASE ( INTERRUPT_BASE + 0x200 )
 
 // ARM periherals interrupt table
@@ -24,6 +23,8 @@
 #define INTERRUPT_TABLE_GPU1_HALTED		( 1 << 5 )
 #define INTERRUPT_TABLE_ILLEGAL_ACCESS_TYPE_1	( 1 << 6 )
 #define INTERRUPT_TABLE_ILLEGAL_ACCESS_TYPE_0	( 1 << 7 )
+
+#define INTERRUPT_BASIC_PENDING_TIMER	( 1 << 0 )
 
 typedef struct {
     volatile unsigned int basic_pending;
@@ -38,6 +39,6 @@ typedef struct {
     volatile unsigned int base_disable;
 } Interrupt_registers;
 
-extern volatile Interrupt_registers* sysInterrupt;
+void startTimerTask(unsigned int us, void (*f)(void));
 
 #endif

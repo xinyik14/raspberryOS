@@ -5,14 +5,15 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    April 14, 2017
+    April 28, 2017
 
 */
 
 #ifndef _RPI_ARM_TIMER_H_
 #define _RPI_ARM_TIMER_H_
 
-#define TIMER_BASE 0x3F00B000UL
+#include "dtcArgs.h"
+
 #define ARMTIMER_BASE ( TIMER_BASE + 0x400 )
 
 #define ARMTIMER_CONTROL_16BIT	( 0 << 1 )
@@ -40,6 +41,8 @@ typedef struct {
     volatile unsigned int Free_Running_Counter;
 } Arm_timer_t;
 
-extern volatile Arm_timer_t* sysArmTimer;
+void setTimer(unsigned int us);
+void cancelTimer(void);
+inline void clearTimerPendingBit(void);
 
 #endif
