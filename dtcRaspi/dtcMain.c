@@ -11,6 +11,8 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
 
 #include "rpi-gpio.h"
 #include "rpi-systimer.h"
@@ -25,13 +27,19 @@ void timerTaskFunc(void);
 
 void kernel_main( unsigned int r0, unsigned int r1, unsigned int atags )
 {
+    
+    /* Initialise the UART */
+    RPI_AuxMiniUartInit( 115200, 8 );
 
+    printf("Hello");
     _disable_interrupts();
 
     setGPIO(27, HIGH);
     waitMicroSeconds(1000000);
 
+    printf("Hello");
     _enable_interrupts();
+    
     
     startTimerTask(1000000, timerTaskFunc);
 

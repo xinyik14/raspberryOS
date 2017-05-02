@@ -60,6 +60,17 @@
 #define HIGH 1
 #define LOW 0
 
+typedef enum {
+    FS_INPUT = 0,
+    FS_OUTPUT,
+    FS_ALT5,
+    FS_ALT4,
+    FS_ALT0,
+    FS_ALT1,
+    FS_ALT2,
+    FS_ALT3,
+    } rpi_gpio_alt_function_t;
+
 extern const int gpio_pin[][2];
 extern volatile unsigned int* gpio;
 int setGPIO(int pin, int status);

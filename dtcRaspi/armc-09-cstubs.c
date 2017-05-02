@@ -54,7 +54,8 @@
 */
 
 #include <sys/stat.h>
-
+/* Prototype for the UART write function */
+#include "rpi-aux.h"
 
 /* Increase program data space. As malloc and related functions depend on this,
    it is useful to have a working implementation. The following suffices for a
@@ -74,3 +75,87 @@ caddr_t _sbrk( int incr )
      heap_end += incr;
      return (caddr_t)prev_heap_end;
 }
+
+void outbyte( char b )
+{
+    RPI_AuxMiniUartWrite(b);
+}
+
+int _write( int file, char *ptr, int len )
+{
+    int todo;
+
+    for( todo = 0; todo < len; todo++ )
+      outbyte(*ptr++);
+
+    return len;
+}
+
+
+
+/* There's currently no implementation of a file system because there's no
+   file system! */
+int _close( int file )
+{
+    return -1;
+}
+
+/* Status of an open file. For consistency with other minimal implementations
+   in these examples, all files are regarded as character special devices. The
+   sys/stat.h header file required is distributed in the include subdirectory
+   for this C library. */
+int _fstat( int file, struct stat *st )
+{
+    st->st_mode = S_IFCHR;
+    return 0;
+}
+
+/* Query whether output stream is a terminal. For consistency with the other
+   minimal implementations, which only support output to stdout, this minimal
+   implementation is suggested: */
+int _isatty(int file)
+{
+    return 1;
+}
+
+/* Establish a new name for an existing file. Minimal implementation: */
+//int link( char *old, char *new )
+//{
+//    errno = EMLINK;
+//    return -1;
+//}
+
+/* Set position in a file. Minimal implementation: */
+int _lseek(int file, int ptr, int dir)
+{
+    return 0;
+}
+
+
+/* Open a file. Minimal implementation: */
+int open( const char *name, int flags, int mode )
+{
+    return -1;
+}
+
+
+/* Read from a file. Minimal implementation: */
+int _read( int file, char *ptr, int len )
+{
+    return 0;
+}
+/* Status of a file (by name). Minimal implementation: */
+int stat( const char *file, struct stat *st )
+{
+    st->st_mode = S_IFCHR;
+    return 0;
+}
+
+/* Remove a file's directory entry. Minimal implementation: */
+//int unlink( char *name )
+//{
+//    errno = ENOENT;
+//    return -1;
+//}
+
+
