@@ -63,5 +63,5 @@
 extern const int gpio_pin[][2];
 extern volatile unsigned int* gpio;
 int setGPIO(int pin, int status);
-
+int setGPIOAlt(int pin, int alt);
 #endif

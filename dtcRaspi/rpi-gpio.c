@@ -70,6 +70,40 @@ const int gpio_pin[][2] = { // #register, #bit
 
 volatile unsigned int* gpio = (unsigned int*)GPIO_BASE;
 
+int setGPIOAlt(int pin, int alt){
+    volatile static int synFlag = 0;
+    while(synFlag == 1)
+	;
+    synFlag = 1;
+
+    if (pin < 0 || pin > 53) return -1;
+    if (alt < 0 || alt > 5) return -2;
+
+    switch (alt){
+	case 0:
+	    gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] |= (1 << (gpio_pin[pin][1]+2));
+	    gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~(1 << (gpio_pin[pin][1]+1));
+	    gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~(1 << (gpio_pin[pin][1]+0));
+	    break;
+	case 1:
+	    break;
+	case 2:
+	    break;
+	case 3:
+	    break;
+	case 4:
+	    break;
+	case 5:
+	    break;
+	default:
+	    synFlag = 0;
+	    return -3;
+    }
+
+    synFlag = 0;
+    return 0;
+}
+
 int setGPIO(int pin, int status){
     
     volatile static int synFlag = 0;

@@ -68,7 +68,7 @@ void core_2_main(void){
 
 void core_3_main(void){
     
-    // startAudio();
+    startAudio();
 
     volatile static int ledStatus = 0;
 
