@@ -17,6 +17,7 @@
 #include "rpi-interrupt.h"
 #include "rpi-armtimer.h"
 #include "rpi-core.h"
+#include "rpi-i2s.h"
 
 extern volatile int pCoreRun[];
 
@@ -28,16 +29,17 @@ void kernel_main( unsigned int r0, unsigned int r1, unsigned int atags )
 
     _disable_interrupts();
 
-    setGPIO(27, HIGH);
     waitMicroSeconds(1000000);
 
     _enable_interrupts();
     
+
+
     startTimerTask(1000000, timerTaskFunc);
 
     start_core_1();
-    start_core_2();
-    start_core_3();
+//    start_core_2();
+//    start_core_3();
 
     core0_main();
 }

@@ -60,8 +60,17 @@
 #define HIGH 1
 #define LOW 0
 
+#define INPUT 0
+#define OUTPUT 1
+
+#define GPIO_EVENT_R 0
+
 extern const int gpio_pin[][2];
 extern volatile unsigned int* gpio;
 int setGPIO(int pin, int status);
+int setGPIOMode(int pin, int status);
+int setGPIOEvent(int pin, int event);
 int setGPIOAlt(int pin, int alt);
+inline int isGPIOEventDetected(int pin);
+inline void clearGPIOEvent(int pin);
 #endif

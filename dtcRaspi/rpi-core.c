@@ -11,6 +11,8 @@
 #include "rpi-core.h"
 #include "rpi-gpio.h"
 #include "rpi-i2s.h"
+#include "rpi-pwm.h"
+#include "rpi-serial.h"
 
 volatile int pCoreRun[4] = {0, 0, 0, 0};
 
@@ -34,41 +36,40 @@ void start_core_3(void){
 
 void core_1_main(void){
     
-    volatile static int ledStatus = 0;
+    // for networking
 
-    while(1){
-	while (pCoreRun[1] == ledStatus)
-	    ;
-	ledStatus = pCoreRun[1];
-	if (ledStatus == 0){
-	    setGPIO(17, LOW);    
-	} else if (ledStatus == 1){
-	    setGPIO(17, HIGH);    
+    volatile int readData = 0;
+    volatile int fData = 0;
+
+    if (initSerial(2, 3, 4) == -1)
+	setGPIO(12, HIGH);
+    while (1){
+	fData = readSerial();
+	readData++;
+	if (readData % 2 == 1){
+	    setGPIO(16, HIGH);
+	} else {
+	    setGPIO(16, LOW);
 	}
     }
 
 }
 
 void core_2_main(void){
-
-    volatile static int ledStatus = 0;
-
-    while(1){
-	while (pCoreRun[2] == ledStatus)
-	    ;
-	ledStatus = pCoreRun[2];
-	if (ledStatus == 0){
-	    setGPIO(22, LOW);    
-	} else if (ledStatus == 1){
-	    setGPIO(22, HIGH);    
-	}
+    
+    while (1){
+	waitMicroSeconds(500000);
+	setGPIO(17, HIGH);
+	waitMicroSeconds(500000);
+	setGPIO(17, LOW);
     }
 }
 
 
 void core_3_main(void){
-    
-    startAudio();
+
+    startPwmAudio();
+//    startAudio();
 
     volatile static int ledStatus = 0;
 

@@ -26,9 +26,6 @@
 #define PCM_DIN_GPIO_ALT	0
 #define PCM_DOUT_GPIO_ALT	0
 
-//#define CM_GP0CTL   ( GPIO_CLOCK_BASE )
-//#define CM_GP0DIV   ( GPIO_CLOCK_BASE + 0x04)
-
 #define PCM_CS_STBY	( 1 << 25 )
 #define PCM_CS_SYNC	( 1 << 24 )
 #define PCM_CS_RXSEX	( 1 << 23 )
