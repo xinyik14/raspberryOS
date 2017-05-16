@@ -2,6 +2,16 @@
     Project of ECS 251 Operating System, UC Davis
     Group member: Yiran Wan, Xinyi Zhang, Zheng Fan, Huanle Zhang
 
+Update (5-16-2017):
+    1. rpi-networking:
+	networking with Arduino, which will connect to smartphone
+    2. rpi-serial:
+	encapsulate serial communications
+    3. rpi-gpio:
+	extend gpio to support serial 
+    TODO:
+	networking, PWM Audio
+
 Update (4-28-2017):
     1. modularize programs:
 	dtcMain.c rpi-armtimer rpi-core rpi-interrupt

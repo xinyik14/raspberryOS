@@ -4,7 +4,7 @@
 
 
     Huanle Zhang at UC Davis. www.huanlezhang.com
-    Last Update: April 28, 2017
+    Last Update: May 16, 2017
 
 */
 
@@ -13,6 +13,7 @@
 #include "rpi-i2s.h"
 #include "rpi-pwm.h"
 #include "rpi-serial.h"
+#include "rpi-networking.h"
 
 volatile int pCoreRun[4] = {0, 0, 0, 0};
 
@@ -38,20 +39,7 @@ void core_1_main(void){
     
     // for networking
 
-    volatile int readData = 0;
-    volatile int fData = 0;
-
-    if (initSerial(2, 3, 4) == -1)
-	setGPIO(12, HIGH);
-    while (1){
-	fData = readSerial();
-	readData++;
-	if (readData % 2 == 1){
-	    setGPIO(16, HIGH);
-	} else {
-	    setGPIO(16, LOW);
-	}
-    }
+    startNetworking();
 
 }
 

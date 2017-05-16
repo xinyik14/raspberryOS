@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    Last Update: April 26, 2017
+    Last Update: May 16, 2017
 
 */
 
@@ -147,6 +147,19 @@ int setGPIOEvent(int pin, int event){
     return 0;
 }
 
+inline void disableGPIOEvent(int pin, int event){
+    switch (event){
+	case GPIO_EVENT_R:
+	    if (pin <= 31){
+		gpio[GPIO_GPREN0] &= ~(1 << pin);	
+	    } else {
+		gpio[GPIO_GPREN1] &= ~(1 << (pin - 32));	
+	    }
+	    break;
+    }
+    return;
+}
+
 inline int isGPIOEventDetected(int pin){
     if (pin <= 31){
 	return (gpio[GPIO_GPEDS0] & (1 << pin)) != 0 ? 1 : 0; 
@@ -162,6 +175,25 @@ inline void clearGPIOEvent(int pin){
     } else {
 	gpio[GPIO_GPEDS1] |= 1 << (pin - 32);
     }    
+    return;
+}
+
+inline void setGPIOPin(int pin, int status){
+    
+    if (status == HIGH){
+	if (pin <= 31){
+	    gpio[GPIO_GPSET0] = 1 << pin;    
+	} else {
+	    gpio[GPIO_GPSET1] = 1 << (pin - 32);
+	}	
+    } else { // low
+    	if (pin <= 31){
+	    gpio[GPIO_GPCLR0] = 1 << pin;
+	} else {
+	    gpio[GPIO_GPCLR1] = 1 << (pin - 32);
+	}
+    }
+
     return;
 }
 
@@ -193,4 +225,22 @@ int setGPIO(int pin, int status){
 
     synFlag = 0;
     return 0;
+}
+
+inline int readGPIO(int pin){
+    
+    if (pin <= 31){
+	if ((gpio[GPIO_GPLEV0] & (1 << pin)) != 0){
+	    return HIGH;    
+	} else {
+	    return LOW;    
+	}
+    } else {
+	if ((gpio[GPIO_GPLEV1] & (1 << (pin - 32))) != 0){
+	    return HIGH;    
+	} else {
+	    return LOW;    
+	}
+    }
+    return -1;
 }

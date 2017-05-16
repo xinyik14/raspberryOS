@@ -1,27 +1,84 @@
+/*
+
+    Huanle Zhang at UC Davis. www.huanlezhang.com
+    Last Update: May 16, 2017
+
+*/
+
 #include "rpi-serial.h"
 #include "rpi-gpio.h"
 
-volatile int mCkPin = 0;
+static int mCkPin = 0, mTxPin = 0, mRxPin = 0;
 
 int initSerial(int ckPin, int txPin, int rxPin){
-    volatile int ret = 0;
-    mCkPin = ckPin;
-    ret = setGPIOMode(ckPin, INPUT);
-    if (ret != 0) return -1;
-    ret = setGPIOMode(txPin, OUTPUT);
-    if (ret != 0) return -1;
-    ret = setGPIOMode(rxPin, INPUT);
-    if (ret != 0) return -1;
-    ret = setGPIOEvent(ckPin, GPIO_EVENT_R);
-    if (ret != 0) return -1;
+
+    int serialPatternCount = 0;
+    int compBit = 0, readBit = 0;
+    const int SERIAL_COUNT_TARGET = 16;
+
+    mCkPin = ckPin; mTxPin = txPin; mRxPin = rxPin;
+
+    if (setGPIOMode(ckPin, INPUT) != 0) return -1;
+    if (setGPIOMode(txPin, OUTPUT) != 0) return -1;
+    if (setGPIOMode(rxPin, INPUT) != 0) return -1;
+    if (setGPIOEvent(ckPin, GPIO_EVENT_R) != 0) return -1;
+
+    while (serialPatternCount < SERIAL_COUNT_TARGET){
+	
+	while (!isGPIOEventDetected(mCkPin))
+	    ;
+	clearGPIOEvent(mCkPin);
+	readBit = readGPIO(mRxPin);
+	if (readBit != compBit){
+	    serialPatternCount = 0;
+	    continue;
+	} 
+	
+	serialPatternCount++;	    
+	compBit = 1 - compBit; 
+
+    }
+
+    // ACK
+    setGPIOPin(mTxPin, HIGH);
+
     return 0;
 }
 
 int readSerial(void){
-    volatile int ret = 0;
-    while (!isGPIOEventDetected(mCkPin))
-	;
-    clearGPIOEvent(mCkPin);
-    ret = 1;
+
+    // read 1 byte data, echo back
+
+    int ret = 0;
+    int readBit = 0;
+    int i;
+
+    static int flag = 0;
+
+    // setGPIOEvent(mCkPin, GPIO_EVENT_R);
+
+    for (i = 0; i < 8; i++) {
+	
+	while (!isGPIOEventDetected(mCkPin))
+	    ;
+	clearGPIOEvent(mCkPin);
+	readBit = readGPIO(mRxPin);
+	setGPIOPin(mTxPin, readBit);
+	if (readBit == LOW){
+	    ret = ret + (0 << i);    
+	} else {
+	    ret = ret + (1 << i);
+	}
+    }
+
+    flag++;
+    if ((flag%2) == 0){
+        setGPIO(26, LOW);	
+    } else {
+        setGPIO(26, HIGH);	
+    }
+
+    // disableGPIOEvent(mCkPin, GPIO_EVENT_R);
+
     return ret;
 }
