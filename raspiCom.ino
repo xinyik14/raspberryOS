@@ -1,3 +1,11 @@
+#include <SPI.h>
+#include "Adafruit_BLE_UART.h"
+
+#define ADAFRUITBLE_REQ 10
+#define ADAFRUITBLE_RDY 2    
+#define ADAFRUITBLE_RST 9
+
+Adafruit_BLE_UART BTLEserial = Adafruit_BLE_UART(ADAFRUITBLE_REQ, ADAFRUITBLE_RDY, ADAFRUITBLE_RST);
 
 const int ckPin = 22;
 const int rxPin = 24;
@@ -23,25 +31,36 @@ void setup() {
     ; 
   } 
   connectRaspi();
+  BTLEserial.begin();
 }
+
+aci_evt_opcode_t laststatus = ACI_EVT_DISCONNECTED;
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-  // connect to Raspi
-  
+  BTLEserial.pollACI();
+  aci_evt_opcode_t status = BTLEserial.getState();
+  if (status != laststatus) {
+    if (status == ACI_EVT_DEVICE_STARTED) {
+        Serial.println(F("* Advertising started"));
+    }
+    if (status == ACI_EVT_CONNECTED) {
+        Serial.println(F("* Connected!"));
+    }
+    if (status == ACI_EVT_DISCONNECTED) {
+        Serial.println(F("* Disconnected or advertising timed out"));
+    }
+    // OK set the last status change to this one
+    laststatus = status;
+  }
 
-  
-  if (Serial.available()){
-
-    
-    
-     mSerialRead = Serial.parseInt();
-     //Serial.println(mSerialRead);
-     
-    sendRaspiData(mSerialRead);
-    Serial.println(recvData);
-  }  
+  if (status == ACI_EVT_CONNECTED) {
+      while (BTLEserial.available()) {
+        char c = BTLEserial.read();
+        sendRaspiData(c);
+      }
+  } 
 }
 
 void connectRaspi(void){
