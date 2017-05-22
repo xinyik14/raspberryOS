@@ -1,7 +1,7 @@
 /*
 
     Huanle Zhang at UC Davis. www.huanlezhang.com
-    Last Update: May 16, 2017
+    Last Update: May 22, 2017
 
 */
 
@@ -53,10 +53,6 @@ int readSerial(void){
     int readBit = 0;
     int i;
 
-    static int flag = 0;
-
-    // setGPIOEvent(mCkPin, GPIO_EVENT_R);
-
     for (i = 0; i < 8; i++) {
 	
 	while (!isGPIOEventDetected(mCkPin))
@@ -70,15 +66,6 @@ int readSerial(void){
 	    ret = ret + (1 << i);
 	}
     }
-
-    flag++;
-    if ((flag%2) == 0){
-        setGPIO(26, LOW);	
-    } else {
-        setGPIO(26, HIGH);	
-    }
-
-    // disableGPIOEvent(mCkPin, GPIO_EVENT_R);
 
     return ret;
 }

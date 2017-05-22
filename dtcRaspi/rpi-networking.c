@@ -1,7 +1,7 @@
 /*
 
     Huanle Zhang at UC Davis. www.huanlezhang.com
-    Last Update: May 16, 2017
+    Last Update: May 22, 2017
 
 */
 
@@ -13,20 +13,47 @@ static const int mCkPin = 2;
 static const int mTxPin = 3;
 static const int mRxPin = 4;
 
+static const int CMD_PLAY = 0x00;
+static const int CMD_STOP = 0x40;
+static const int CMD_PREV = 0x80;
+static const int CMD_NEXT = 0xC0;
+
+static const int VOL_MIN = 0;
+static const int VOL_MAX = 63;
+
 void startNetworking(void){
     
     int readData = 0;
+    volatile static int flag[5] = {0, 0, 0, 0, 0};
 
-    if (initSerial(mCkPin, mTxPin, mRxPin) == -1){
-	setGPIO(14, HIGH);	
-    }
+    initSerial(mCkPin, mTxPin, mRxPin);
+
     while (1){
 	readData = readSerial();
-	if (readData == 123){
-	    setGPIO(16, HIGH);    
-	} else {
-	    setGPIO(16, LOW);    
+	
+	if (readData <= 0x3F && readData != 0){ // volume data
+	   
+	   flag[0] = 1 - flag[0];
+	   setGPIO(14, flag[0]);
+
+	} else if (readData == CMD_PLAY){ // play
+	    
+	    setGPIO(26, HIGH);
+	    
+	} else if (readData == CMD_STOP){ // stop
+	
+	    setGPIO(26, LOW);
+
+	} else if (readData == CMD_PREV){ // prev
+	    
+	    flag[3] = 1 - flag[3];
+	    setGPIO(16, flag[3]);
+
+	} else if (readData == CMD_NEXT){ // next
+	    flag[4] = 1 - flag[4];
+	    setGPIO(12, flag[4]);
 	}
+
     }
 
 }

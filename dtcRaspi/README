@@ -2,6 +2,13 @@
     Project of ECS 251 Operating System, UC Davis
     Group member: Yiran Wan, Xinyi Zhang, Zheng Fan, Huanle Zhang
 
+Update (5-22-2017):
+    1. rpi-networking rpi-serial:
+	Netwroking with smartphone via Arduino board. 
+        (BLE and customized Serial)
+    TODO:
+	PWM Audio
+
 Update (5-16-2017):
     1. rpi-networking:
 	networking with Arduino, which will connect to smartphone
