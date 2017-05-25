@@ -1,13 +1,14 @@
 /*
 
     Huanle Zhang at UC Davis. www.huanlezhang.com
-    Last Update: May 22, 2017
+    Last Update: May 25, 2017
 
 */
 
 #include "rpi-networking.h"
 #include "rpi-serial.h"
 #include "rpi-gpio.h"
+#include "dtcMediaPlayer.h"
 
 static const int mCkPin = 2;
 static const int mTxPin = 3;
@@ -33,25 +34,29 @@ void startNetworking(void){
 	
 	if (readData <= 0x3F && readData != 0){ // volume data
 	   
-	   flag[0] = 1 - flag[0];
-	   setGPIO(14, flag[0]);
+	  // flag[0] = 1 - flag[0];
+	  // setGPIO(6, flag[0]);
+	    mediaPlayer_vol(readData);
 
 	} else if (readData == CMD_PLAY){ // play
 	    
-	    setGPIO(26, HIGH);
+	    // setGPIO(13, HIGH);
+	    mediaPlayer_start();
 	    
 	} else if (readData == CMD_STOP){ // stop
 	
-	    setGPIO(26, LOW);
+	    //setGPIO(13, LOW);
+	    mediaPlayer_stop();
 
 	} else if (readData == CMD_PREV){ // prev
 	    
-	    flag[3] = 1 - flag[3];
-	    setGPIO(16, flag[3]);
-
+	    //flag[3] = 1 - flag[3];
+	    //setGPIO(19, flag[3]);
+	    mediaPlayer_prev();
 	} else if (readData == CMD_NEXT){ // next
-	    flag[4] = 1 - flag[4];
-	    setGPIO(12, flag[4]);
+	    //flag[4] = 1 - flag[4];
+	    //setGPIO(26, flag[4]);
+	    mediaPlayer_next();
 	}
 
     }

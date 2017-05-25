@@ -7,6 +7,13 @@ Group member:
 Instructor:
     Christopher Nitta
 
+Update (5-25-2017):
+    1. dtcMediaPlayer:
+	interface for Media Player
+
+    TODO:
+	PWM Audio
+
 Update (5-22-2017):
     1. rpi-networking rpi-serial:
 	Netwroking with smartphone via Arduino board. 

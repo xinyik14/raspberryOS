@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    Last Update: May 16, 2017
+    Last Update: May 25, 2017
 
 */
 
@@ -28,8 +28,8 @@ void kernel_main( unsigned int r0, unsigned int r1, unsigned int atags )
 {
 
     _disable_interrupts();
-
-    waitMicroSeconds(1000000);
+    
+    // 
 
     _enable_interrupts();
     
@@ -38,8 +38,8 @@ void kernel_main( unsigned int r0, unsigned int r1, unsigned int atags )
     startTimerTask(1000000, timerTaskFunc);
 
     start_core_1();
-//    start_core_2();
-//    start_core_3();
+    start_core_2();
+    start_core_3();
 
     core0_main();
 }
@@ -49,37 +49,18 @@ void timerTaskFunc(void)
     static int lit = 0;
     if (lit){
 	lit = 0;
-	setGPIO(27, HIGH);
+	setGPIO(5, HIGH);
     } else {
 	lit = 1;
-	setGPIO(27, LOW);
+	setGPIO(5, LOW);
     }
 }
 
 void core0_main(void)
 {
-
+    volatile int i = 0;
     while (1){
-
-    	waitMicroSeconds(500000);
-	pCoreRun[1] = 1;
-
-	waitMicroSeconds(1000000);
-	pCoreRun[1] = 0;
-
-	waitMicroSeconds(500000);
-	pCoreRun[2] = 1;
-
-	waitMicroSeconds(1000000);
-	pCoreRun[2] = 0;
-
-	waitMicroSeconds(500000);
-	pCoreRun[3] = 1;
-
-	waitMicroSeconds(1000000);
-	pCoreRun[3] = 0;
-	
-	
+	i++;	
     }
  
 }

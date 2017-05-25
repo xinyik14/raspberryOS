@@ -14,6 +14,7 @@
 #include "rpi-pwm.h"
 #include "rpi-serial.h"
 #include "rpi-networking.h"
+#include "dtcMediaPlayer.h"
 
 volatile int pCoreRun[4] = {0, 0, 0, 0};
 
@@ -38,38 +39,25 @@ void start_core_3(void){
 void core_1_main(void){
     
     // for networking
-
     startNetworking();
 
 }
 
 void core_2_main(void){
     
-    while (1){
-	waitMicroSeconds(500000);
-	setGPIO(17, HIGH);
-	waitMicroSeconds(500000);
-	setGPIO(17, LOW);
-    }
+    startMediaPlayer();
+
 }
 
 
 void core_3_main(void){
 
-    startPwmAudio();
-//    startAudio();
+    volatile int i = 0;
 
-    volatile static int ledStatus = 0;
-
-    while(1){
-	while (pCoreRun[3] == ledStatus)
-	    ;
-	ledStatus = pCoreRun[3];
-	if (ledStatus == 0){
-	    setGPIO(5, LOW);    
-	} else if (ledStatus == 1){
-	    setGPIO(5, HIGH);    
-	}
+    while (1){
+	i++;	
     }
+
+    
 }
 
