@@ -40,24 +40,19 @@ void core_1_main(void){
     
     // for networking
     startNetworking();
-
+    while(1);
 }
 
 void core_2_main(void){
-    
-    startMediaPlayer();
 
+    startMediaPlayer();
+    while(1);
 }
 
 
 void core_3_main(void){
 
-    volatile int i = 0;
-
-    while (1){
-	i++;	
-    }
-
-    
+    startPwmAudio();
+    while (1);    
 }
 

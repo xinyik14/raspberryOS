@@ -40,7 +40,7 @@ void startNetworking(void){
 
 	} else if (readData == CMD_PLAY){ // play
 	    
-	    // setGPIO(13, HIGH);
+	    //setGPIO(13, HIGH);
 	    mediaPlayer_start();
 	    
 	} else if (readData == CMD_STOP){ // stop

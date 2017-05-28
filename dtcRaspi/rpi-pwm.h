@@ -1,3 +1,15 @@
+/*
+    
+    Reference:
+	Accessing the hardware pwm peripheral on the raspberry pi in c++.
+	www.hertaville.com/rpipwm.html
+
+
+    Huanle Zhang at UC Davis. www.huanlezhang.com
+    Last Update: May 27, 2017
+
+*/
+
 #ifndef _RPI_PWM_H_
 #define _RPI_PWM_H_
 
@@ -8,7 +20,7 @@
 #define PWM_STA_BERR	( 1 << 8 )
 #define PWM_STA_GAPO1	( 1 << 4 )
 
-
+#define PWM_BUFFER_SIZE	2048	
 
 typedef struct {
 
@@ -25,5 +37,13 @@ typedef struct {
 } Pwm_registers;
 
 void startPwmAudio(void);
+
+void pwmInitializeBuffer(int*);
+void pwmAddData(int*);
+inline int pwmBufferAvailableSize(void);
+inline int pwmInitialized(void);
+inline void pwmStop(void);
+inline void pwmResume(void);
+inline void pwmSetVol(double volRatio);
 
 #endif

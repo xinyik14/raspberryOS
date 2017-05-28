@@ -114,3 +114,5 @@ Reference:
     David Welch's Pi Repo. www.github.com/dwelch67/raspberrypi
     Trying Bare Metal on Raspberry Pi 2. www.raspberrypi.org/forums/viewtopic.php?p=701773
     The I2S sound thread. www.raspberrypi.org/forums/viewtopic.php?t=8496&f=44
+    Accessing the hardware pwm peripheral on the raspberry pi in c++.
+    www.hertaville.com/rpipwm.html

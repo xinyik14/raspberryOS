@@ -20,10 +20,10 @@
 
 #define I2S_BASE	( BCM2837_BASE + 0x203000 )
 
-// #define GPIO_CLOCK_BASE	( BCM2837_BASE + 0x101070 )
+#define GPIO_CLOCK_BASE	( BCM2837_BASE + 0x101000 )
 
 #define PWM_BASE	( BCM2837_BASE + 0x20C000 )
 
-#define GPIO_CLOCK_BASE	( PWM_BASE + 40 )
+// #define GPIO_CLOCK_BASE	( PWM_BASE + 40 )
 
 #endif
