@@ -1,6 +1,35 @@
     
     Project of ECS 251 Operating System, UC Davis
-    Group member: Yiran Wan, Xinyi Zhang, Zheng Fan, Huanle Zhang
+
+Group member: 
+    Yiran Wan, Xinyi Zhang, Zheng Fan, Huanle Zhang
+
+Instructor:
+    Christopher Nitta
+
+Update (5-25-2017):
+    1. dtcMediaPlayer:
+	interface for Media Player
+
+    TODO:
+	PWM Audio
+
+Update (5-22-2017):
+    1. rpi-networking rpi-serial:
+	Netwroking with smartphone via Arduino board. 
+        (BLE and customized Serial)
+    TODO:
+	PWM Audio
+
+Update (5-16-2017):
+    1. rpi-networking:
+	networking with Arduino, which will connect to smartphone
+    2. rpi-serial:
+	encapsulate serial communications
+    3. rpi-gpio:
+	extend gpio to support serial 
+    TODO:
+	networking, PWM Audio
 
 Update (4-28-2017):
     1. modularize programs:
@@ -84,3 +113,6 @@ Reference:
     Brian Sidebotham's Bare Metal Pi Tutorial. www.valvers.com
     David Welch's Pi Repo. www.github.com/dwelch67/raspberrypi
     Trying Bare Metal on Raspberry Pi 2. www.raspberrypi.org/forums/viewtopic.php?p=701773
+    The I2S sound thread. www.raspberrypi.org/forums/viewtopic.php?t=8496&f=44
+    Accessing the hardware pwm peripheral on the raspberry pi in c++.
+    www.hertaville.com/rpipwm.html

@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    Last Update: April 26, 2017
+    Last Update: May 16, 2017
 
 */
 
@@ -70,6 +70,133 @@ const int gpio_pin[][2] = { // #register, #bit
 
 volatile unsigned int* gpio = (unsigned int*)GPIO_BASE;
 
+int setGPIOAlt(int pin, int alt){
+    volatile static int synFlag = 0;
+    while(synFlag == 1)
+	;
+    synFlag = 1;
+
+    if (pin < 0 || pin > 53) return -1;
+    if (alt < 0 || alt > 5) return -2;
+
+    switch (alt){
+	case 0:
+	    gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] |= (1 << (gpio_pin[pin][1]+2));
+	    gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~(1 << (gpio_pin[pin][1]+1));
+	    gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~(1 << (gpio_pin[pin][1]+0));
+	    break;
+	case 1:
+	    break;
+	case 2:
+	    break;
+	case 3:
+	    break;
+	case 4:
+	    break;
+	case 5:
+	    break;
+	default:
+	    synFlag = 0;
+	    return -3;
+    }
+
+    synFlag = 0;
+    return 0;
+}
+
+int setGPIOMode(int pin, int mode){
+    
+    volatile static int synFlag = 0;
+    while(synFlag == 1)
+	;
+    synFlag = 1;
+    if (pin < 0 || pin > 53) return -1;
+    if (mode != INPUT && mode != OUTPUT) return -2;
+    if (mode == INPUT){
+	// 0 0 0
+	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~( 1 << gpio_pin[pin][1]);
+	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~( 1 << (gpio_pin[pin][1]+1) );
+	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~( 1 << (gpio_pin[pin][1]+2) );
+    } else { // 0 0 1
+	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] |=  1 << gpio_pin[pin][1];
+	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~( 1 << (gpio_pin[pin][1]+1) );
+	gpio[GPIO_GPFSEL0 + gpio_pin[pin][0]] &= ~( 1 << (gpio_pin[pin][1]+2) );
+    }
+    synFlag = 0;
+    return 0;
+}
+
+int setGPIOEvent(int pin, int event){
+    volatile static int synFlag = 0;
+    while (synFlag == 1)
+	;
+    synFlag = 1;
+
+    if (pin < 0 || pin > 53) return -1;
+    switch (event){
+    case GPIO_EVENT_R:
+	if (pin <= 31){
+	    gpio[GPIO_GPREN0] |= (1 << pin);    
+	} else {
+	    gpio[GPIO_GPREN1] |= (1 << (pin - 32));
+	}
+	break;
+    }
+
+    synFlag = 0;
+    return 0;
+}
+
+inline void disableGPIOEvent(int pin, int event){
+    switch (event){
+	case GPIO_EVENT_R:
+	    if (pin <= 31){
+		gpio[GPIO_GPREN0] &= ~(1 << pin);	
+	    } else {
+		gpio[GPIO_GPREN1] &= ~(1 << (pin - 32));	
+	    }
+	    break;
+    }
+    return;
+}
+
+inline int isGPIOEventDetected(int pin){
+    if (pin <= 31){
+	return (gpio[GPIO_GPEDS0] & (1 << pin)) != 0 ? 1 : 0; 
+    } else {
+	return (gpio[GPIO_GPEDS1] & (1 << (pin - 32))) != 0 ? 1 : 0;
+    }
+    return -1;
+}
+
+inline void clearGPIOEvent(int pin){
+    if (pin <= 31){
+	gpio[GPIO_GPEDS0] |= 1 << pin;	
+    } else {
+	gpio[GPIO_GPEDS1] |= 1 << (pin - 32);
+    }    
+    return;
+}
+
+inline void setGPIOPin(int pin, int status){
+    
+    if (status == HIGH){
+	if (pin <= 31){
+	    gpio[GPIO_GPSET0] = 1 << pin;    
+	} else {
+	    gpio[GPIO_GPSET1] = 1 << (pin - 32);
+	}	
+    } else { // low
+    	if (pin <= 31){
+	    gpio[GPIO_GPCLR0] = 1 << pin;
+	} else {
+	    gpio[GPIO_GPCLR1] = 1 << (pin - 32);
+	}
+    }
+
+    return;
+}
+
 int setGPIO(int pin, int status){
     
     volatile static int synFlag = 0;
@@ -98,4 +225,22 @@ int setGPIO(int pin, int status){
 
     synFlag = 0;
     return 0;
+}
+
+inline int readGPIO(int pin){
+    
+    if (pin <= 31){
+	if ((gpio[GPIO_GPLEV0] & (1 << pin)) != 0){
+	    return HIGH;    
+	} else {
+	    return LOW;    
+	}
+    } else {
+	if ((gpio[GPIO_GPLEV1] & (1 << (pin - 32))) != 0){
+	    return HIGH;    
+	} else {
+	    return LOW;    
+	}
+    }
+    return -1;
 }

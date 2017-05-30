@@ -5,7 +5,7 @@
     
     
     Huanle Zhang at UC Davis. www.huanlezhang.com 
-    Last Update: April 14, 2017
+    Last Update: May 16, 2017
 
 */
 
@@ -60,8 +60,18 @@
 #define HIGH 1
 #define LOW 0
 
-extern const int gpio_pin[][2];
-extern volatile unsigned int* gpio;
-int setGPIO(int pin, int status);
+#define INPUT 0
+#define OUTPUT 1
 
+#define GPIO_EVENT_R 0
+
+int setGPIO(int pin, int status);
+inline void setGPIOPin(int pin, int status);
+inline int readGPIO(int pin);
+int setGPIOMode(int pin, int status);
+inline int setGPIOEvent(int pin, int event);
+int setGPIOAlt(int pin, int alt);
+inline int isGPIOEventDetected(int pin);
+inline void clearGPIOEvent(int pin);
+inline void disableGPIOEvent(int pin, int event);
 #endif
