@@ -7,6 +7,13 @@ Group member:
 Instructor:
     Christopher Nitta
 
+Update (6-08-2017):
+    1. dtcMediaPlayer, rpi-pwm:
+	media player done. Sounds come out.
+    
+    TODO: 
+	Python Virtualization 
+
 Update (5-25-2017):
     1. dtcMediaPlayer:
 	interface for Media Player

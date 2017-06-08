@@ -1,7 +1,7 @@
 /*
 
     Huanle Zhang at UC Davis. www.huanlezhang.com
-    Last Update: May 25, 2017
+    Last Update: June 8, 2017
 
 */
 
@@ -12,6 +12,9 @@
 #include "dtcMediaPlayer.h"
 #include "rpi-gpio.h"
 #include "rpi-pwm.h"
+#include "audio_1.h"
+#include "audio_2.h"
+#include "audio_3.h"
 
 volatile int pending_start = 0;
 volatile int pending_stop = 0;
@@ -21,7 +24,7 @@ volatile int pending_next = 0;
 volatile int pending_vol = 0;
 volatile int volValue = 0;
 
-int pMusicArray[PWM_BUFFER_SIZE];
+char pMusicArray[PWM_BUFFER_SIZE];
 
 
 inline void mediaPlayer_start(void){
@@ -52,17 +55,15 @@ void startMediaPlayer(void){
     int size_buffer = 0;
     int i = 0;
     char data = 0;
-
+    int index_audio_data = 0;
+    int index_audio_file = 0;
 
     while (pwmInitialized() == -1)
 	;
-    
-    setGPIO(6, HIGH);
+   
+    pwmInitBuffer(pMusicArray);
 
-    for (i = 0; i < PWM_BUFFER_SIZE; i++){
-	pMusicArray[i] = rand() % 256; 
-    }
-    pwmInitializeBuffer(pMusicArray);
+    setGPIO(6, HIGH);
 
     while(1){
 	if (pending_start != 0){
@@ -82,11 +83,26 @@ void startMediaPlayer(void){
 	if (pending_prev != 0){
 	    pending_prev = 0;
 	    setGPIO(19, HIGH); 
+
+	    if (index_audio_file == 0)
+		index_audio_file = 3;
+	    
+	    --index_audio_file;
+
+	    index_audio_data = 0;
+	    
 	    continue;
 	}
 	if (pending_next != 0){
 	    pending_next = 0;
 	    setGPIO(19, LOW);
+
+	    ++index_audio_file;
+	    if (index_audio_file == 3)
+		index_audio_file = 0;
+	    
+	    index_audio_data = 0;
+
 	    continue;
 	}
 	if (pending_vol != 0){
@@ -96,10 +112,27 @@ void startMediaPlayer(void){
 	}
 
 	if (pwmBufferWritable() == 1){
-	    for (i = 0; i < PWM_BUFFER_SIZE/2; i++){
-		pMusicArray[i] = rand() % 256;
+	    if (index_audio_file == 0){
+		for (i = 0; i < PWM_BUFFER_SIZE; i++){
+		    // pMusicArray[i] = rand() % 256;
+		    pMusicArray[i] = audio_data1[index_audio_data];
+		    index_audio_data++;
+		    index_audio_data %= AUDIO_1_LEN;
+		}
+	    } else if (index_audio_file == 1){
+		for (i = 0; i < PWM_BUFFER_SIZE; i++){
+		    pMusicArray[i] = audio_data2[index_audio_data];    
+		    index_audio_data++;
+		    index_audio_data %= AUDIO_2_LEN;
+		}	
+	    } else if (index_audio_file == 2){
+		for (i = 0; i < PWM_BUFFER_SIZE; i++){
+		    pMusicArray[i] = audio_data3[index_audio_data];
+		    index_audio_data++;
+		    index_audio_data %= AUDIO_3_LEN;
+		}	
 	    }
-	    pwmAddData(pMusicArray);    
+	    pwmAddBuffer();    
 	}
 
     }    

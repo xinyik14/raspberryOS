@@ -38,9 +38,8 @@ typedef struct {
 
 void startPwmAudio(void);
 
-void pwmInitializeBuffer(int*);
-void pwmAddData(int*);
-inline int pwmBufferAvailableSize(void);
+void pwmInitBuffer(char*);
+void pwmAddBuffer(void);
 inline int pwmInitialized(void);
 inline void pwmStop(void);
 inline void pwmResume(void);
